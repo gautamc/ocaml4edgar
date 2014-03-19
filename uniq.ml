@@ -61,7 +61,7 @@ let extract_uniq_field_grouped_values ~skip_rows ~master_file ~accum ~field_inde
   if ( List.exists accum ~f:(fun row -> List.hd_exn row = List.hd_exn reduced_list) ) then
     accum
   else
-    accum @ reduced_list
+    reduced_list :: accum
 ;;
 
 let rec preorder_listing ~values_list ~field_index root_dir =
@@ -141,16 +141,20 @@ let rec paired_grouped_preorder_listing ~values_list ~field_index ~field_to_pair
 
 let typed_preorder_listing ~field_index ~field_to_pair ~group_p root_dir =
   match group_p with
-  | true ->
+  | true -> (
     match field_to_pair with
     | Some field_to_pair ->
       let uniq_field_values = paired_grouped_preorder_listing root_dir ~values_list:[] ~field_index:field_index ~field_to_pair:field_to_pair in
-      List.iter uniq_field_values ~f:(
+      List.iter ~f:(
         fun group ->
-          List.iter group ~f:(fun x -> printf "%s|" x);
+          List.iter ~f:(
+            fun row -> 
+              List.iter ~f:(fun cell -> printf "%s|" cell) row
+          ) group;
           printf "\n"
-      )
+      ) uniq_field_values
     | None -> assert false
+  )
   | false ->
     match field_to_pair with
     | Some field_to_pair ->
