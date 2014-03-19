@@ -3,3 +3,4 @@ output/*.txt
 output/*.csv
 output/*.pipe
 _build/*
+*.native
