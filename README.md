@@ -1,10 +1,13 @@
-# To build without gprof:
+-- To build without gprof:
 $ corebuild -pkg re2 uniq.native 
 
-# To build with gprof:
+-- To build with gprof:
+<pre>
 $ corebuild -lflag -p -pkg re2 uniq.native
+</pre>
 
 To run the program:
+<pre>
 $ ./uniq.native 
 Build a list of unique values for the given field by recursively visiting index files under the root directory's daily-index and full-index sub-directories.
 
@@ -51,3 +54,12 @@ $ $ awk -F"|" '{if(NF>2) print $0}' output/cik_cname_grouped.txt |tail
 1506374|ARABELLA EXPLORATION, INC.|LONE OAK ACQUISITION CORP
 1487906|CACHET FINANCIAL SOLUTIONS, INC.|DE Acquisition 2, Inc.
 1413547|Writ Media Group, Inc.|Writers Group Film Corp
+</pre>
+
+To build the test programs in t/:
+<pre>
+$ cd
+$ corebuild -build-dir test test.ml
+$ corebuild -build-dir test2 test2.ml
+</pre>
+This will create the native programs as test/test.native and test2/test2.native.
