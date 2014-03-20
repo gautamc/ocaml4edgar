@@ -36,7 +36,9 @@ let main () =
 ;;
 
 let () =
-  let records = read_sort_group_rows () in
+  let raw_records = List.drop (read_lines "../test_data/master.20140214.idx") 7 and
+      records = read_sort_group_rows ()
+  in
   Command.run (
     Bench.make_command [
       Bench.Test.create ~name:"Read Sort Group operation" (
@@ -46,6 +48,12 @@ let () =
       Bench.Test.create ~name:"Collapse Groups operation" (
         fun () ->
           ignore (collapse_groups records)
+      ) ;
+      Bench.Test.create ~name:"read_lines operation" (
+        fun () ->
+          ignore (
+            List.drop (read_lines "../test_data/master.20140214.idx") 7
+          )
       )
     ]
   );
@@ -58,6 +66,15 @@ Estimated testing time 20s (2 benchmarks x 10s). Change using -quota SECS.
 ├───────────────────────────┼──────────┼────────────┼──────────┼──────────┼────────────┤
 │ Read Sort Group operation │  34.51ms │ 2_968.19kw │ 869.98kw │ 869.97kw │    100.00% │
 │ Collapse Groups operation │   1.73ms │   315.75kw │  11.11kw │  11.11kw │      5.00% │
+└───────────────────────────┴──────────┴────────────┴──────────┴──────────┴────────────┘
+
+Estimated testing time 30s (3 benchmarks x 10s). Change using -quota SECS.
+┌───────────────────────────┬──────────┬────────────┬──────────┬──────────┬────────────┐
+│ Name                      │ Time/Run │    mWd/Run │ mjWd/Run │ Prom/Run │ Percentage │
+├───────────────────────────┼──────────┼────────────┼──────────┼──────────┼────────────┤
+│ Read Sort Group operation │  34.02ms │ 2_968.19kw │ 869.98kw │ 869.97kw │    100.00% │
+│ Collapse Groups operation │   1.70ms │   315.75kw │  11.05kw │  11.05kw │      5.00% │
+│ read_lines operation      │   5.35ms │   561.52kw │  82.88kw │  82.88kw │     15.73% │
 └───────────────────────────┴──────────┴────────────┴──────────┴──────────┴────────────┘
 
 ***********************************)
