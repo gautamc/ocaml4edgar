@@ -54,6 +54,12 @@ let () =
           ignore (
             List.drop (read_lines "../test_data/master.20140214.idx") 7
           )
+      ) ;
+      Bench.Test.create ~name:"String to List map operation" (
+        fun () ->
+          ignore (
+            List.map ~f:(fun x -> String.split ~on:'|' x) raw_records
+          )
       )
     ]
   );
@@ -76,5 +82,16 @@ Estimated testing time 30s (3 benchmarks x 10s). Change using -quota SECS.
 │ Collapse Groups operation │   1.70ms │   315.75kw │  11.05kw │  11.05kw │      5.00% │
 │ read_lines operation      │   5.35ms │   561.52kw │  82.88kw │  82.88kw │     15.73% │
 └───────────────────────────┴──────────┴────────────┴──────────┴──────────┴────────────┘
+
+Estimated testing time 40s (4 benchmarks x 10s). Change using -quota SECS.
+┌──────────────────────────────┬──────────┬────────────┬──────────┬──────────┬────────────┐
+│ Name                         │ Time/Run │    mWd/Run │ mjWd/Run │ Prom/Run │ Percentage │
+├──────────────────────────────┼──────────┼────────────┼──────────┼──────────┼────────────┤
+│ Read Sort Group operation    │  32.32ms │ 2_968.19kw │ 868.31kw │ 868.31kw │    100.00% │
+│ Collapse Groups operation    │   1.64ms │   315.75kw │  11.03kw │  11.03kw │      5.09% │
+│ read_lines operation         │   5.46ms │   561.52kw │  82.66kw │  82.66kw │     16.90% │
+│ String to List map operation │  13.13ms │   889.66kw │ 289.83kw │ 289.83kw │     40.63% │
+└──────────────────────────────┴──────────┴────────────┴──────────┴──────────┴────────────┘
+
 
 ***********************************)
