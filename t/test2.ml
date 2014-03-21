@@ -19,7 +19,8 @@ let collapse_groups groups =
 ;;
 
 let read_sort_group_rows () =
-  List.drop (read_lines "../test_data/master.20140214.idx") 7
+  (* List.drop (read_lines "../test_data/master.20140214.idx") 7 *)
+  List.drop (read_lines "../test_data/d1/master") 10
   |> List.map ~f:(fun x -> String.split ~on:'|' x)
   |> List.sort ~cmp:(fun a b -> compare (List.nth_exn a 0) (List.nth_exn b 0))
   |> List.group ~break:(fun a b -> (List.nth_exn a 0) <> (List.nth_exn b 0))
@@ -36,7 +37,8 @@ let main () =
 ;;
 
 let () =
-  let raw_records = List.drop (read_lines "../test_data/master.20140214.idx") 7 and records = read_sort_group_rows () in
+  (* let raw_records = List.drop (read_lines "../test_data/master.20140214.idx") 7 and records = read_sort_group_rows () in *)
+  let raw_records = List.drop (read_lines "../test_data/d1/master") 10 and records = read_sort_group_rows () in
   let records_to_sort = List.map ~f:(fun x -> String.split ~on:'|' x) raw_records in
   let records_to_group = List.sort ~cmp:(fun a b -> compare (List.nth_exn a 0) (List.nth_exn b 0)) records_to_sort in
   Command.run (
