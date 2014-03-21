@@ -36,9 +36,8 @@ let main () =
 ;;
 
 let () =
-  let raw_records = List.drop (read_lines "../test_data/master.20140214.idx") 7 and
-      records = read_sort_group_rows ()
-  in
+  let raw_records = List.drop (read_lines "../test_data/master.20140214.idx") 7 and records = read_sort_group_rows () in
+  let records_to_sort = List.map ~f:(fun x -> String.split ~on:'|' x) raw_records in
   Command.run (
     Bench.make_command [
       Bench.Test.create ~name:"Read Sort Group operation" (
@@ -59,6 +58,12 @@ let () =
         fun () ->
           ignore (
             List.map ~f:(fun x -> String.split ~on:'|' x) raw_records
+          )
+      ) ;
+      Bench.Test.create ~name:"Sort operation" (
+        fun () ->
+          ignore (
+            List.sort ~cmp:(fun a b -> compare (List.nth_exn a 0) (List.nth_exn b 0)) records_to_sort
           )
       )
     ]
@@ -93,5 +98,15 @@ Estimated testing time 40s (4 benchmarks x 10s). Change using -quota SECS.
 │ String to List map operation │  13.13ms │   889.66kw │ 289.83kw │ 289.83kw │     40.63% │
 └──────────────────────────────┴──────────┴────────────┴──────────┴──────────┴────────────┘
 
+Estimated testing time 50s (5 benchmarks x 10s). Change using -quota SECS.
+┌──────────────────────────────┬──────────┬────────────┬──────────┬──────────┬────────────┐
+│ Name                         │ Time/Run │    mWd/Run │ mjWd/Run │ Prom/Run │ Percentage │
+├──────────────────────────────┼──────────┼────────────┼──────────┼──────────┼────────────┤
+│ Read Sort Group operation    │  30.97ms │ 2_968.19kw │ 868.31kw │ 868.31kw │    100.00% │
+│ Collapse Groups operation    │   1.68ms │   315.75kw │  11.02kw │  11.02kw │      5.41% │
+│ read_lines operation         │   5.47ms │   561.52kw │  82.66kw │  82.66kw │     17.67% │
+│ String to List map operation │  14.14ms │   889.66kw │ 286.67kw │ 286.67kw │     45.66% │
+│ Sort operation               │   4.94ms │ 1_208.57kw │  35.44kw │  35.44kw │     15.95% │
+└──────────────────────────────┴──────────┴────────────┴──────────┴──────────┴────────────┘
 
 ***********************************)
