@@ -130,4 +130,18 @@ Estimated testing time 1m (6 benchmarks x 10s). Change using -quota SECS.
 │ Group operation              │   1.18ms │   308.43kw │  14.55kw │  14.55kw │      3.80% │
 └──────────────────────────────┴──────────┴────────────┴──────────┴──────────┴────────────┘
 
+Estimated testing time 1m (6 benchmarks x 10s). Change using -quota SECS.
+┌──────────────────────────────┬──────────┬─────────────┬─────────────┬─────────────┬────────────┐
+│ Name                         │ Time/Run │     mWd/Run │    mjWd/Run │    Prom/Run │ Percentage │
+├──────────────────────────────┼──────────┼─────────────┼─────────────┼─────────────┼────────────┤
+│ Read Sort Group operation    │ 489.94ms │ 40_233.24kw │ 15_715.86kw │ 15_715.86kw │    100.00% │
+│ Collapse Groups operation    │  31.54ms │  3_251.00kw │    479.58kw │    479.58kw │      6.44% │
+│ read_lines operation         │   5.56ms │    561.52kw │     82.56kw │     82.56kw │      1.13% │
+│ String to List map operation │ 233.21ms │ 11_121.67kw │  7_836.01kw │  7_836.01kw │     47.60% │
+│ Sort operation               │ 113.53ms │ 18_517.12kw │  2_268.23kw │  2_268.23kw │     23.17% │
+│ Group operation              │  29.77ms │  3_657.43kw │    973.33kw │    973.33kw │      6.08% │
+└──────────────────────────────┴──────────┴─────────────┴─────────────┴─────────────┴────────────┘
+Benchmarks that take 1ns to 100ms can be estimated precisely. For more reliable 
+estimates, redesign your benchmark to have a shorter execution time.
+
 ***********************************)
