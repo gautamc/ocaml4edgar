@@ -22,7 +22,7 @@ let read_sort_group_rows () =
   List.drop (read_lines "../test_data/master.20140214.idx") 7
   |> List.map ~f:(fun x -> String.split ~on:'|' x)
   |> List.sort ~cmp:(fun a b -> compare (List.nth_exn a 0) (List.nth_exn b 0))
-  |> List.group ~break:(fun a b -> (List.nth_exn a 0) <> (List.nth_exn b 0))  
+  |> List.group ~break:(fun a b -> (List.nth_exn a 0) <> (List.nth_exn b 0))
 ;;
 
 let main () =
@@ -38,6 +38,7 @@ let main () =
 let () =
   let raw_records = List.drop (read_lines "../test_data/master.20140214.idx") 7 and records = read_sort_group_rows () in
   let records_to_sort = List.map ~f:(fun x -> String.split ~on:'|' x) raw_records in
+  let records_to_group = List.sort ~cmp:(fun a b -> compare (List.nth_exn a 0) (List.nth_exn b 0)) records_to_sort in
   Command.run (
     Bench.make_command [
       Bench.Test.create ~name:"Read Sort Group operation" (
@@ -64,6 +65,12 @@ let () =
         fun () ->
           ignore (
             List.sort ~cmp:(fun a b -> compare (List.nth_exn a 0) (List.nth_exn b 0)) records_to_sort
+          )
+      ) ;
+      Bench.Test.create ~name:"Group operation" (
+        fun () ->
+          ignore (
+            List.group ~break:(fun a b -> (List.nth_exn a 0) <> (List.nth_exn b 0)) records_to_group
           )
       )
     ]
@@ -107,6 +114,18 @@ Estimated testing time 50s (5 benchmarks x 10s). Change using -quota SECS.
 │ read_lines operation         │   5.47ms │   561.52kw │  82.66kw │  82.66kw │     17.67% │
 │ String to List map operation │  14.14ms │   889.66kw │ 286.67kw │ 286.67kw │     45.66% │
 │ Sort operation               │   4.94ms │ 1_208.57kw │  35.44kw │  35.44kw │     15.95% │
+└──────────────────────────────┴──────────┴────────────┴──────────┴──────────┴────────────┘
+
+Estimated testing time 1m (6 benchmarks x 10s). Change using -quota SECS.
+┌──────────────────────────────┬──────────┬────────────┬──────────┬──────────┬────────────┐
+│ Name                         │ Time/Run │    mWd/Run │ mjWd/Run │ Prom/Run │ Percentage │
+├──────────────────────────────┼──────────┼────────────┼──────────┼──────────┼────────────┤
+│ Read Sort Group operation    │  31.18ms │ 2_968.19kw │ 868.31kw │ 868.31kw │    100.00% │
+│ Collapse Groups operation    │   1.64ms │   315.75kw │  11.03kw │  11.03kw │      5.26% │
+│ read_lines operation         │   5.50ms │   561.52kw │  82.66kw │  82.66kw │     17.64% │
+│ String to List map operation │  13.33ms │   889.66kw │ 289.83kw │ 289.83kw │     42.76% │
+│ Sort operation               │   4.96ms │ 1_208.57kw │  35.56kw │  35.56kw │     15.91% │
+│ Group operation              │   1.18ms │   308.43kw │  14.55kw │  14.55kw │      3.80% │
 └──────────────────────────────┴──────────┴────────────┴──────────┴──────────┴────────────┘
 
 ***********************************)
