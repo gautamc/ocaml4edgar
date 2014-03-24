@@ -39,6 +39,21 @@ let extract_uniq_field_pair_values ~skip_rows ~master_file ~accum ~field_index ~
   List.dedup (List.unordered_append accum uniq_field_pair_values) ~compare:(fun a b -> compare (fst a) (fst b))
 ;;
 
+let merge_via_collapsing_same_groups ~accum in_list =
+  List.fold ~init:accum ~f:(
+    fun accum grouped_row ->
+      match List.partition_tf ~f:(
+        fun accum_row ->
+          (List.nth_exn accum_row 0) = (List.nth_exn grouped_row 0)
+      ) accum
+      with
+      | ([], _) -> grouped_row :: accum
+      | (row :: [], filtered_accum) ->
+        ((List.hd_exn row) :: ((List.tl_exn row) @ (List.tl_exn grouped_row) |> List.dedup)) :: filtered_accum  
+      | (_,_) -> assert false
+  ) in_list
+;;
+
 let extract_uniq_field_grouped_values ~skip_rows ~master_file ~accum ~field_index ~field_to_pair =
   List.drop (read_lines master_file) skip_rows
   |> List.map ~f:(fun x -> String.split ~on:'|' x)
@@ -57,17 +72,7 @@ let extract_uniq_field_grouped_values ~skip_rows ~master_file ~accum ~field_inde
               group_accum @ (List.nth_exn row field_to_pair) :: []
       ) group
   )
-  |> List.fold ~init:accum ~f:(
-    fun accum grouped_row ->
-      if ( List.exists ~f:(
-        fun accum_row ->
-          (List.nth_exn accum_row 0) = (List.nth_exn grouped_row 0) &&
-          (List.nth_exn accum_row 1) = (List.nth_exn grouped_row 1)
-      ) accum ) then
-        accum
-      else
-        grouped_row :: accum
-  )
+  |> merge_via_collapsing_same_groups ~accum:accum
 ;;
 
 let rec preorder_listing ~values_list ~field_index root_dir =
