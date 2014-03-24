@@ -25,15 +25,24 @@ let sort_and_group_file ~skip_rows ~master_file ~field_index ~field_to_pair =
 let merge_via_collapsing_same_groups ~accum ~in_list =
   List.fold ~init:accum ~f:(
     fun accum grouped_row ->
-      match List.partition_tf ~f:(fun e -> false) accum with
-      | (rows, filtered_accum) -> grouped_row :: filtered_accum
-      | ([], filtered_accum) -> grouped_row :: filtered_accum
-      | ([], []) -> assert false
+      match List.partition_tf ~f:(
+        fun accum_row ->
+          (List.nth_exn accum_row 0) = (List.nth_exn grouped_row 0)
+      ) accum
+      with
+      | ([], _) -> grouped_row :: accum
+      | (row :: [], filtered_accum) ->
+        if( List.exists ~f:(fun cell_val -> cell_val = (List.nth_exn grouped_row 1)) row ) then
+          accum
+        else
+          (row @ [List.nth_exn grouped_row 1]) :: filtered_accum  
+      | (_,_) -> assert false
   ) in_list
 ;;
 
 let () =
-  let master_files = [ ("../test_data/master.20140214.idx", 7); ("../test_data/d1/master", 10); ] in
+  (* ("../test_data/d1/master", 10); *)
+  let master_files = [ ("../test_data/master.20140214-1-small.idx", 7); ("../test_data/master.20140214-2-small.idx", 7); ("../test_data/master.20140214-3-small.idx", 7) ] in
   let rec visit_file ~accum ~list_to_visit =
     match list_to_visit with
     | pair :: rest ->
@@ -43,5 +52,9 @@ let () =
         ~list_to_visit:rest
     | [] -> accum
   in
-  printf "%d\n" (List.length (visit_file ~accum:[] ~list_to_visit:master_files))
+  List.iter ~f:(
+    fun row ->
+      List.iter ~f:(fun e -> printf "%s|" e) row;
+      printf "\n";
+  ) (visit_file ~accum:[] ~list_to_visit:master_files)
 ;;

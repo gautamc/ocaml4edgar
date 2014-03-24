@@ -1,0 +1,10 @@
+Description:           Daily Index of EDGAR Dissemination Feed
+Last Data Received:    Feb 14, 2014
+Comments:              webmaster@sec.gov
+Anonymous FTP:         ftp://ftp.sec.gov/edgar/
+ 
+CIK|Company Name|Form Type|Date Filed|File Name
+--------------------------------------------------------------------------------
+1000045|NICHOLAS FINANCIAL, INC|SC 13G/A|20140214|edgar/data/1000045/0000846087-14-000059.txt
+1000045|NICHOLAS FINANCIAL INC|SC 13G/A|20140214|edgar/data/1000045/0000902219-14-000840.txt
+1000097|KINGDON CAPITAL MANAGEMENT L.L.C.|13F-HR|20140214|edgar/data/1000097/0000919574-14-001804.txt
