@@ -32,17 +32,13 @@ let merge_via_collapsing_same_groups ~accum ~in_list =
       with
       | ([], _) -> grouped_row :: accum
       | (row :: [], filtered_accum) ->
-        if( List.exists ~f:(fun cell_val -> cell_val = (List.nth_exn grouped_row 1)) row ) then
-          accum
-        else
-          (row @ [List.nth_exn grouped_row 1]) :: filtered_accum  
+        ((List.hd_exn row) :: ((List.tl_exn row) @ (List.tl_exn grouped_row) |> List.dedup)) :: filtered_accum  
       | (_,_) -> assert false
   ) in_list
 ;;
 
 let () =
-  (* ("../test_data/d1/master", 10); *)
-  let master_files = [ ("../test_data/master.20140214-1-small.idx", 7); ("../test_data/master.20140214-2-small.idx", 7); ("../test_data/master.20140214-3-small.idx", 7) ] in
+  let master_files = [ ("../test_data/master.20140214.idx", 7); ("../test_data/d1/master", 10); ] in
   let rec visit_file ~accum ~list_to_visit =
     match list_to_visit with
     | pair :: rest ->
