@@ -37,8 +37,8 @@ let merge_via_collapsing_same_groups ~accum ~in_list =
   ) in_list
 ;;
 
-let () =
-  let master_files = [ ("../test_data/master.20140214.idx", 7); ("../test_data/d1/master", 10); ] in
+let visit_files_and_build_grouped_row () =
+  let master_files = [ ("../test_data/master.20140214-1-small.idx", 7); ("../test_data/master.20140214-2-small.idx", 7); ("../test_data/master.20140214-3-small.idx", 7); ("../test_data/d1/master", 10) ] in
   let rec visit_file ~accum ~list_to_visit =
     match list_to_visit with
     | pair :: rest ->
@@ -53,4 +53,30 @@ let () =
       List.iter ~f:(fun e -> printf "%s|" e) row;
       printf "\n";
   ) (visit_file ~accum:[] ~list_to_visit:master_files)
+;;
+
+let benchmark_merge_operation_across_files () =
+  let master_files = [ ("../test_data/master.20140214-1-small.idx", 7); ("../test_data/master.20140214-2-small.idx", 7); ] in
+    ()
+;;
+
+let command =
+  Command.basic
+    ~summary: "Test program for building and benchmarking group-by operation across multiple master files."
+    ~readme: (fun () -> "")
+    Command.Spec.(
+      empty
+      +> flag "-b" (no_arg) ~doc:"If flag is set runs benchmark on merge_via_collapsing_same_groups else builds the grouped rows and prints them."
+    )
+    (
+      fun benchmark () ->
+        if( benchmark = true ) then
+          benchmark_merge_operation_across_files ()
+        else
+          visit_files_and_build_grouped_row ()
+    )
+;;
+
+let () =
+  Command.run ~version: "0.1" ~build_info:"test program 3" command
 ;;
