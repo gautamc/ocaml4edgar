@@ -38,7 +38,8 @@ let merge_via_collapsing_same_groups ~accum ~in_list =
 ;;
 
 let visit_files_and_build_grouped_row () =
-  let master_files = [ ("../test_data/master.20140214-1-small.idx", 7); ("../test_data/master.20140214-2-small.idx", 7); ("../test_data/master.20140214-3-small.idx", 7); ("../test_data/d1/master", 10) ] in
+  (* ("../test_data/d1/master", 10) *)
+  let master_files = [ ("../test_data/master.20140214-1-small.idx", 7); ("../test_data/master.20140214-2-small.idx", 7); ("../test_data/master.20140214-3-small.idx", 7); ] in
   let rec visit_file ~accum ~list_to_visit =
     match list_to_visit with
     | pair :: rest ->
@@ -57,7 +58,24 @@ let visit_files_and_build_grouped_row () =
 
 let benchmark_merge_operation_across_files () =
   let master_files = [ ("../test_data/master.20140214-1-small.idx", 7); ("../test_data/master.20140214-2-small.idx", 7); ] in
-    ()
+  let first_pair = List.hd_exn master_files and
+      second_pair = List.hd_exn (List.tl_exn master_files)
+  in
+  let rows_from_first_file = sort_and_group_file ~skip_rows:(snd first_pair) ~master_file:(fst first_pair) ~field_index:0 ~field_to_pair:1 and
+      rows_from_second_file = sort_and_group_file ~skip_rows:(snd second_pair) ~master_file:(fst second_pair) ~field_index:0 ~field_to_pair:1
+  in
+  Command.run ~version: "0.1" ~build_info:"test program 3 with benchmarks" (
+    Bench.make_command [
+      Bench.Test.create ~name:"Merging rows from first file into empty list" (
+        fun () ->
+          ignore ( merge_via_collapsing_same_groups ~accum:[] ~in_list:rows_from_first_file )
+      ) ;
+      Bench.Test.create ~name:"Merging rows from second file into empty list" (
+        fun () ->
+          ignore ( merge_via_collapsing_same_groups ~accum:[] ~in_list:rows_from_second_file )
+      ) ;
+    ]
+  );
 ;;
 
 let command =
@@ -66,7 +84,7 @@ let command =
     ~readme: (fun () -> "")
     Command.Spec.(
       empty
-      +> flag "-b" (no_arg) ~doc:"If flag is set runs benchmark on merge_via_collapsing_same_groups else builds the grouped rows and prints them."
+      +> flag "-b" (no_arg) ~doc:"benchmark flag - If flag is set runs benchmark on merge_via_collapsing_same_groups else builds the grouped rows and prints them."
     )
     (
       fun benchmark () ->
