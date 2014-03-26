@@ -38,7 +38,7 @@ let merge_via_collapsing_same_groups ~accum ~in_list =
 ;;
 
 let () =
-  let master_files = [ ("../test_data/master.20140214-1-small.idx", 7); ("../test_data/master.20140214-2-small.idx", 7); ("../test_data/d2/master", 10); ("../test_data/d1/master", 10) ] in
+  let master_files = [ ("../test_data/master.20140214-1-small.idx", 7); ("../test_data/master.20140214-2-small.idx", 7); ("../test_data/d2/master", 10); ("../test_data/d1/master", 10); ] in
   let first_pair = List.hd_exn master_files and
       second_pair = List.hd_exn (List.tl_exn master_files)
   in
@@ -64,6 +64,18 @@ let () =
 ;;
 
 (*
+OUTPUT WITH THE TWO SMALL FILES:
+$ ./test4/test4.native 
+Estimated testing time 30s (3 benchmarks x 10s). Change using -quota SECS.
+┌─────────────────────────────────────────────────────────┬──────────┬─────────┬────────────┐
+│ Name                                                    │ Time/Run │ mWd/Run │ Percentage │
+├─────────────────────────────────────────────────────────┼──────────┼─────────┼────────────┤
+│ Merging rows from first file into empty list            │  76.85ns │  48.00w │      9.28% │
+│ Merging rows from second file into empty list           │  76.84ns │  48.00w │      9.27% │
+│ Merging rows from second file into rows from first file │ 828.59ns │ 233.00w │    100.00% │
+└─────────────────────────────────────────────────────────┴──────────┴─────────┴────────────┘
+
+OUTPUT WITH THE TWO ACTUAL MASTER FILES (../test_data/d2/master", ../test_data/d1/master)
 $ ./test4/test4.native 
 Estimated testing time 30s (3 benchmarks x 10s). Change using -quota SECS.
 ┌─────────────────────────────────────────────────────────┬──────────┬─────────┬──────────┬──────────┬────────────┐
