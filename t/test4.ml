@@ -38,7 +38,7 @@ let merge_via_collapsing_same_groups ~accum ~in_list =
 ;;
 
 let () =
-  let master_files = [ ("../test_data/d2/master", 10); ("../test_data/d1/master", 10); ("../test_data/master.20140214-1-small.idx", 7); ("../test_data/master.20140214-2-small.idx", 7) ] in
+  let master_files = [ ("../test_data/master.20140214-1-small.idx", 7); ("../test_data/master.20140214-2-small.idx", 7); ("../test_data/d2/master", 10); ("../test_data/d1/master", 10) ] in
   let first_pair = List.hd_exn master_files and
       second_pair = List.hd_exn (List.tl_exn master_files)
   in
