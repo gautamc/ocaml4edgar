@@ -38,12 +38,20 @@ let merge_via_collapsing_same_groups ~accum ~in_list =
 ;;
 
 let () =
-  let master_files = [ ("../test_data/master.20140214-1-small.idx", 7); ("../test_data/master.20140214-2-small.idx", 7); ("../test_data/d2/master", 10); ("../test_data/d1/master", 10); ] in
-  let first_pair = List.hd_exn master_files and
-      second_pair = List.hd_exn (List.tl_exn master_files)
+  let master_files = [
+    ("../test_data/d2/master", 10); ("../test_data/d1/master", 10); ("../test_data/d1/master", 10);
+    ("../test_data/master.20140214-1-small.idx", 7); ("../test_data/master.20140214-2-small.idx", 7);
+  ] in
+  let first_pair  = List.nth_exn master_files 0 and
+      second_pair = List.nth_exn master_files 1 and
+      third_pair  = List.nth_exn master_files 2
   in
-  let rows_from_first_file = sort_and_group_file ~skip_rows:(snd first_pair) ~master_file:(fst first_pair) ~field_index:0 ~field_to_pair:1 and
-      rows_from_second_file = sort_and_group_file ~skip_rows:(snd second_pair) ~master_file:(fst second_pair) ~field_index:0 ~field_to_pair:1
+  let rows_from_first_file  = sort_and_group_file ~skip_rows:(snd first_pair)  ~master_file:(fst first_pair)  ~field_index:0 ~field_to_pair:1 and
+      rows_from_second_file = sort_and_group_file ~skip_rows:(snd second_pair) ~master_file:(fst second_pair) ~field_index:0 ~field_to_pair:1 and
+      rows_from_third_file  = sort_and_group_file ~skip_rows:(snd third_pair)  ~master_file:(fst third_pair)  ~field_index:0 ~field_to_pair:1
+  in
+  let
+      merged_rows_from_first_and_second_files = merge_via_collapsing_same_groups ~accum:rows_from_first_file ~in_list:rows_from_second_file
   in
   Command.run (
     Bench.make_command [
@@ -58,12 +66,17 @@ let () =
       Bench.Test.create ~name:"Merging rows from second file into rows from first file" (
         fun () ->
           ignore ( merge_via_collapsing_same_groups ~accum:rows_from_first_file ~in_list:rows_from_second_file )
-      )
+      ) ;
+      Bench.Test.create ~name:"Merging rows from third file into merged_rows_from_first_and_second_files" (
+        fun () ->
+          ignore ( merge_via_collapsing_same_groups ~accum:merged_rows_from_first_and_second_files ~in_list:rows_from_third_file )
+      ) ;
     ]
   );
 ;;
 
 (*
+
 OUTPUT WITH THE TWO SMALL FILES:
 $ ./test4/test4.native 
 Estimated testing time 30s (3 benchmarks x 10s). Change using -quota SECS.
@@ -75,7 +88,7 @@ Estimated testing time 30s (3 benchmarks x 10s). Change using -quota SECS.
 │ Merging rows from second file into rows from first file │ 828.59ns │ 233.00w │    100.00% │
 └─────────────────────────────────────────────────────────┴──────────┴─────────┴────────────┘
 
-OUTPUT WITH THE TWO ACTUAL MASTER FILES (../test_data/d2/master", ../test_data/d1/master)
+OUTPUT WITH THE TWO ACTUAL MASTER FILES (../test_data/d2/master, ../test_data/d1/master)
 $ ./test4/test4.native 
 Estimated testing time 30s (3 benchmarks x 10s). Change using -quota SECS.
 ┌─────────────────────────────────────────────────────────┬──────────┬─────────┬──────────┬──────────┬────────────┐
@@ -87,4 +100,5 @@ Estimated testing time 30s (3 benchmarks x 10s). Change using -quota SECS.
 └─────────────────────────────────────────────────────────┴──────────┴─────────┴──────────┴──────────┴────────────┘
 Benchmarks that take 1ns to 100ms can be estimated precisely. For more reliable 
 estimates, redesign your benchmark to have a shorter execution time.
+
 *)
