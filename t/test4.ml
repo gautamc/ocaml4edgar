@@ -101,4 +101,16 @@ Estimated testing time 30s (3 benchmarks x 10s). Change using -quota SECS.
 Benchmarks that take 1ns to 100ms can be estimated precisely. For more reliable 
 estimates, redesign your benchmark to have a shorter execution time.
 
+Estimated testing time 40s (4 benchmarks x 10s). Change using -quota SECS.
+┌───────────────────────────────────────────────────────────────────────────┬──────────┬─────────┬──────────┬──────────┬────────────┐
+│ Name                                                                      │ Time/Run │ mWd/Run │ mjWd/Run │ Prom/Run │ Percentage │
+├───────────────────────────────────────────────────────────────────────────┼──────────┼─────────┼──────────┼──────────┼────────────┤
+│ Merging rows from first file into empty list                              │  140.21s │ 20.30Gw │   1.39Gw │   1.39Gw │     17.19% │
+│ Merging rows from second file into empty list                             │  157.23s │ 21.59Gw │   1.53Gw │   1.53Gw │     19.28% │
+│ Merging rows from second file into rows from first file                   │  547.16s │ 50.36Gw │  11.83Gw │  11.83Gw │     67.08% │
+│ Merging rows from third file into merged_rows_from_first_and_second_files │  815.68s │ 60.56Gw │  21.30Gw │  21.30Gw │    100.00% │
+└───────────────────────────────────────────────────────────────────────────┴──────────┴─────────┴──────────┴──────────┴────────────┘
+Benchmarks that take 1ns to 100ms can be estimated precisely. For more reliable 
+estimates, redesign your benchmark to have a shorter execution time.
+
 *)
