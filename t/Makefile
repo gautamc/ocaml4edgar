@@ -1,4 +1,4 @@
-.PHONY: test test2 test3 test4
+.PHONY: test test2 test3 test4 test5
 
 test:
 	corebuild -build-dir test test.native
@@ -23,3 +23,9 @@ test4:
 
 test4-clean:
 	corebuild -build-dir test4 -clean
+
+test5:
+	corebuild -build-dir test5 -pkg core_bench test5.native
+
+test5-clean:
+	corebuild -build-dir test5 -clean
