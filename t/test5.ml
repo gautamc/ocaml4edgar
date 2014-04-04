@@ -81,48 +81,73 @@ ALL Sort OPS => Start Time: 1397343415.049344, End Time: 1397343415.049418, Tota
 Group OP 1 => Start Time: 1397343415.049418, End Time: 1397343415.049422, Total Time: 0.000004
 Group OP 2 => Start Time 1397343415.049422, End Time: 1397343415.049424, Total Time: 0.000002
 
+head -107 /data/yacct/edgar/daily-index/2014_04/master.20140401.idx > ../test_data/master.20140401-100.idx
+head -107 /data/yacct/edgar/daily-index/2014_04/master.20140402.idx > ../test_data/master.20140402-100.idx
+head -107 /data/yacct/edgar/daily-index/2014_04/master.20140403.idx > ../test_data/master.20140403-100.idx
 OUTPUT WITH -100.idx files: 
 
 ALL Sort OPS => Start Time: 1397346280.899281, End Time: 1397346280.899676, Total Time: 0.000395
 Group OP 1 => Start Time: 1397346280.899676, End Time: 1397346280.899777, Total Time: 0.000101
 Group OP 2 => Start Time 1397346280.899777, End Time: 1397346280.900062, Total Time: 0.000285
 
+head -207 /data/yacct/edgar/daily-index/2014_04/master.20140401.idx > ../test_data/master.20140401-200.idx
+head -207 /data/yacct/edgar/daily-index/2014_04/master.20140402.idx > ../test_data/master.20140402-200.idx
+head -207 /data/yacct/edgar/daily-index/2014_04/master.20140403.idx > ../test_data/master.20140403-200.idx
 OUTPUT WITH -200.idx files: 
 
 ALL Sort OPS => Start Time: 1397345989.763435, End Time: 1397345989.764147, Total Time: 0.000712
 Group OP 1 => Start Time: 1397345989.764147, End Time: 1397345989.764824, Total Time: 0.000677
 Group OP 2 => Start Time 1397345989.764824, End Time: 1397345989.766911, Total Time: 0.002087
 
+head -407 /data/yacct/edgar/daily-index/2014_04/master.20140401.idx > ../test_data/master.20140401-400.idx
+head -407 /data/yacct/edgar/daily-index/2014_04/master.20140402.idx > ../test_data/master.20140402-400.idx
+head -407 /data/yacct/edgar/daily-index/2014_04/master.20140403.idx > ../test_data/master.20140403-400.idx
 OUTPUT WITH -400.idx files: 
 
 ALL Sort OPS => Start Time: 1397346664.095869, End Time: 1397346664.097269, Total Time: 0.001400
 Group OP 1 => Start Time: 1397346664.097269, End Time: 1397346664.100708, Total Time: 0.003439
 Group OP 2 => Start Time 1397346664.100708, End Time: 1397346664.105576, Total Time: 0.004868
 
+head -807 /data/yacct/edgar/daily-index/2014_04/master.20140401.idx > ../test_data/master.20140401-800.idx
+head -807 /data/yacct/edgar/daily-index/2014_04/master.20140402.idx > ../test_data/master.20140402-800.idx
+head -807 /data/yacct/edgar/daily-index/2014_04/master.20140403.idx > ../test_data/master.20140403-800.idx
 OUTPUT WITH -800.idx files: 
 
 ALL Sort OPS => Start Time: 1397347856.018215, End Time: 1397347856.020838, Total Time: 0.002623
 Group OP 1 => Start Time: 1397347856.020838, End Time: 1397347856.034244, Total Time: 0.013406
 Group OP 2 => Start Time 1397347856.034244, End Time: 1397347856.054529, Total Time: 0.020285
 
+
+head -2407 /data/yacct/edgar/daily-index/2014_04/master.20140401.idx > ../test_data/master.20140401-2400.idx
+head -2407 /data/yacct/edgar/daily-index/2014_04/master.20140402.idx > ../test_data/master.20140402-2400.idx
+head -2407 /data/yacct/edgar/daily-index/2014_04/master.20140403.idx > ../test_data/master.20140403-2400.idx
 OUTPUT WITH -2400.idx files:
 
 ALL Sort OPS => Start Time: 1397348172.325642, End Time: 1397348172.335305, Total Time: 0.009663
 Group OP 1 => Start Time: 1397348172.335305, End Time: 1397348172.533438, Total Time: 0.198133
 Group OP 2 => Start Time 1397348172.533438, End Time: 1397348172.851040, Total Time: 0.317602
 
+head -7207 ../test_data/d1/master > ../test_data/master.20140401-7200.idx
+head -7207 ../test_data/d2/master > ../test_data/master.20140402-7200.idx
+head -7207 /data/yacct/edgar/full-index/2013/QTR1/master > ../test_data/master.20140403-7200.idx
 OUTPUT WITH -7200.idx files:
 
 ALL Sort OPS => Start Time: 1397348668.672051, End Time: 1397348668.701508, Total Time: 0.029457
 Group OP 1 => Start Time: 1397348668.701508, End Time: 1397348669.920445, Total Time: 1.218937
 Group OP 2 => Start Time 1397348669.920445, End Time: 1397348671.887200, Total Time: 1.966755
 
+head -14407 ../test_data/d1/master > ../test_data/master.20140401-14400.idx
+head -14407 ../test_data/d2/master > ../test_data/master.20140402-14400.idx
+head -14407 /data/yacct/edgar/full-index/2013/QTR1/master > ../test_data/master.20140403-14400.idx
 OUTPUT WITH -14400.idx files:
 
 ALL Sort OPS => Start Time: 1397357933.689751, End Time: 1397357933.722172, Total Time: 0.032421
 Group OP 1 => Start Time: 1397357933.722172, End Time: 1397357935.040020, Total Time: 1.317848
 Group OP 2 => Start Time 1397357935.040020, End Time: 1397357937.149802, Total Time: 2.109782
 
+head -21607 ../test_data/d1/master > ../test_data/master.20140401-21600.idx
+head -21607 ../test_data/d2/master > ../test_data/master.20140402-21600.idx
+head -21607 /data/yacct/edgar/full-index/2013/QTR1/master > ../test_data/master.20140403-21600.idx
 OUTPUT WITH -21600.idx files:
 
 ALL Sort OPS => Start Time: 1397360396.122938, End Time: 1397360396.154486, Total Time: 0.031548
