@@ -1,7 +1,8 @@
 *~
-output/*.txt
-output/*.csv
-output/*.pipe
-_build/*
+*/output/*.txt
+*/output/*.csv
+*/output/*.pipe
+*/_build/*
 *.native
 *.idx
+*/t/test*/*
