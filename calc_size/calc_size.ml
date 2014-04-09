@@ -3,6 +3,7 @@ open Core.Std;;
 open Core.In_channel;;
 open Printf;;
 open Unix;;
+open Int64;;
 
 let ls dir_path_str =
   match dir_path_str with
@@ -21,16 +22,13 @@ let ls dir_path_str =
   )
 ;;
 
-ignore (ls Sys.argv.(1))
+let file_sizes master_file =
+  []
+;;
 
-(*
-let all_lines = read_lines "/data/yacct/edgar/daily-index/2014_01/master.20140110.idx" in
-  printf "Total Lines: %d\n" (List.length all_lines);
-  match
-    try (List.nth all_lines 7) with
-    | _ -> None
-  with
-    | None -> assert false
-    | Some x ->
-      printf "%s\n" x;
-      *)
+if of_int (Array.length Sys.argv) >= 2L then begin
+  let file_sizes = List.map (List.filter (ls Sys.argv.(1)) ~f:(fun x -> Re2.Regex.matches (Re2.Regex.create_exn "^.+\\.idx$") x)) ~f:(
+    fun master_file_name -> file_sizes (Sys.argv.(1) ^ master_file_name)
+  ) in
+  printf "%d\n" (List.length file_sizes)
+end
