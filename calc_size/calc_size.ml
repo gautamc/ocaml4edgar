@@ -27,8 +27,9 @@ let file_sizes master_file =
 ;;
 
 if of_int (Array.length Sys.argv) >= 2L then begin
-  let file_sizes = List.map (List.filter (ls Sys.argv.(1)) ~f:(fun x -> Re2.Regex.matches (Re2.Regex.create_exn "^.+\\.idx$") x)) ~f:(
+  ls Sys.argv.(1)
+  |> List.filter ~f:(fun x -> Re2.Regex.matches (Re2.Regex.create_exn "^.+\\.idx$") x)
+  |> List.map ~f:(
     fun master_file_name -> file_sizes (Sys.argv.(1) ^ master_file_name)
-  ) in
-  printf "%d\n" (List.length file_sizes)
+  ) |> List.length |> printf "%d\n"
 end
