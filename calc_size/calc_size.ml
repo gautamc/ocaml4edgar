@@ -57,5 +57,5 @@ if of_int (Array.length Sys.argv) >= 2L then begin
   |> List.filter ~f:(fun x -> Re2.Regex.matches (Re2.Regex.create_exn "^.+\\.idx$") x)
   |> List.map ~f:(
     fun master_file_name -> space_used (Sys.argv.(1) ^ master_file_name)
-  ) |> List.length |> printf "%d\n"
+  ) |> List.fold ~init:0.0 ~f:(fun total size -> size +. total ) |> printf "%f GB\n"
 end
